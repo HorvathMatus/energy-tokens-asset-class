@@ -1,0 +1,10 @@
+regime,token,total_conn,token_net,status,dSR
+Crypto turmoil,POWR,78.9,-0.63,receiver,-0.006
+Energy crisis,POWR,79.7,-0.43,receiver,-0.017
+Recovery,POWR,74.2,-0.05,receiver,-0.005
+Crypto turmoil,SNC,78.8,-0.87,receiver,0.028
+Energy crisis,SNC,79.6,-0.63,receiver,-0.005
+Recovery,SNC,74.1,-0.19,receiver,0.02
+Crypto turmoil,EWT,78.9,-0.76,receiver,-0.002
+Energy crisis,EWT,79,-0.99,receiver,-0
+Recovery,EWT,73.8,-0.54,receiver,-0.036

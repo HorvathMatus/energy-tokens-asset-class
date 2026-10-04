@@ -1,0 +1,34 @@
+# Raw and intermediate data are licensed or re-downloadable and never committed
+Raw_Data/*
+!Raw_Data/README.md
+!Raw_Data/CoinGecko_volume/
+Raw_Data/CoinGecko_volume/*
+!Raw_Data/CoinGecko_volume/.gitkeep
+Data/*
+!Data/.gitkeep
+julia/Data/*
+!julia/Data/.gitkeep
+
+# Third-party code fetched by julia/get_dynamicnets.sh
+julia/DynamicNets_functions.jl
+julia/Manifest.toml
+
+# Large generated outputs (figures and full time series)
+Output/*.jpg
+Output/*.png
+Output/Frequencies/*
+!Output/Frequencies/.gitkeep
+Output/figures/*
+!Output/figures/.gitkeep
+Output/descriptive/
+julia/Output/C*.csv
+julia/Output/robust_Chorizon_*.csv
+julia/Output/*.log
+
+# System and editor files
+.DS_Store
+.Rhistory
+.RData
+.Rproj.user/
+.ipynb_checkpoints/
+*.log
