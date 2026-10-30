@@ -1,7 +1,8 @@
 # =============================================================================
 # 17_descriptive_tables.R
 # Data description: asset universe and data-quality screens (Table 1),
-# descriptive statistics for prices and log-returns (Table 16), and the
+# descriptive statistics for prices and log-returns (Table 16, with the
+# gold-backed tokens and electricity markets added for JCM), and the
 # price and log-return panels of all 30 assets (Figures 12 and 13).
 #
 #   Table 1  uses the business-day return matrix of 09_build_returns.R.
@@ -57,12 +58,40 @@ describe <- function(x) {
   c(Mean = m, SD = s, Min = min(x), Q25 = q[1], Median = q[2], Q75 = q[3], Max = max(x),
     Skewness = mean((x - m)^3) / s^3, Kurtosis = mean((x - m)^4) / s^4)
 }
+# Futures: Dataset.csv holds ratio-adjusted indices (01b_futures_roll_adjust.R),
+# whose log changes are the correct roll-adjusted returns. The price panel
+# reports the unadjusted front-month settlement prices instead.
+FUT <- c("B", "CL", "HH", "GC", "HG")
+unadj <- read.csv("Data/futures_unadjusted.csv"); unadj$Date <- as.Date(unadj$Date)
+unadj <- unadj %>% filter(Date >= START, Date <= END)
 table16 <- bind_rows(lapply(PAPER30, function(a) {
   p <- px[[a]][!is.na(px[[a]])]
   r <- diff(log(p))
-  bind_rows(c(Panel = "Prices", Ticker = a, round(describe(p), 4)),
+  pl <- if (a %in% FUT) unadj[[a]][!is.na(unadj[[a]])] else p
+  bind_rows(c(Panel = "Prices", Ticker = a, round(describe(pl), 4)),
             c(Panel = "Returns", Ticker = a, round(describe(r), 4)))
-})) %>% arrange(desc(Panel == "Prices"))
+}))
+
+# Gold-backed tokens (exchange closes at 00:00 UTC, own trading days) and
+# electricity (daily average price, weekday-demeaned business-day log changes
+# exactly as used in 18_electricity_gold.R)
+gold_tok <- list(PAXG = "Raw_Data/GoldTokens/PAXG_binance.csv", XAUT = "Raw_Data/GoldTokens/XAUT_bitfinex.csv")
+for (g in names(gold_tok)) {
+  d <- read_csv(gold_tok[[g]], show_col_types = FALSE) %>% transmute(Date = as.Date(date) + 1, p = as.numeric(close)) %>%
+    filter(Date >= START, Date <= END, !is.na(p))
+  table16 <- bind_rows(table16, c(Panel = "Prices", Ticker = g, round(describe(d$p), 4)),
+                       c(Panel = "Returns", Ticker = g, round(describe(diff(log(d$p))), 4)))
+}
+el <- read_csv("Output/jcm/electricity_daily.csv", show_col_types = FALSE)
+bd <- R30$Date
+for (z in c("EL_DE", "EL_SI", "EL_ITN", "EL_AU")) {
+  p <- el[[z]][match(bd, el$Date)]; prev <- el[[z]][match(c(bd[1] - 3, head(bd, -1)), el$Date)]
+  r <- ifelse(p > 0 & prev > 0, log(p / prev), NA); r <- r - ave(r, weekdays(bd), FUN = function(x) mean(x, na.rm = TRUE))
+  pw <- el[[z]][el$Date >= START & el$Date <= END]
+  table16 <- bind_rows(table16, c(Panel = "Prices", Ticker = z, round(describe(pw), 4)),
+                       c(Panel = "Returns", Ticker = z, round(describe(r), 4)))
+}
+table16 <- table16 %>% arrange(desc(Panel == "Prices"))
 write_csv(table16, "Output/descriptive/table16_descriptive.csv")
 
 # ── Figures 12 and 13: price and log-return panels ───────────────────────────

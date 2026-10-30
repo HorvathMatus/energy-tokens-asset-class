@@ -21,7 +21,7 @@
 rm(list = ls())
 suppressMessages({ library(tidyverse); library(sandwich) })
 
-load("Data/returns_full30.RData")   # R30 (business-day log returns), blocks
+load("Data/returns_full30_aligned.RData")   # R30 with exchange-traded series aligned (09b), blocks
 dir.create("Output/liquidity", showWarnings = FALSE, recursive = TRUE)
 dir.create("Output/identity",  showWarnings = FALSE, recursive = TRUE)
 
@@ -83,11 +83,14 @@ liq <- bind_rows(lapply(CG_ASSETS, function(tk) {
 write_csv(liq, "Output/liquidity/liquidity_table.csv")
 
 # ── Business-day volume aligned to R30 (sum over calendar days each return spans)
+# The return dated t runs from the 00:00 UTC snapshot dated at the previous
+# business day to the one dated t, so it spans the UTC days prev, ..., t-1,
+# which carry the event dates of the CoinGecko volume file.
 bd_volume <- function(tk) {
   d <- CG[[tk]] %>% select(Date, vol)
   bd <- R30$Date
   prev <- c(bd[1] - 1, bd[-length(bd)])
-  sapply(seq_along(bd), function(i) sum(d$vol[d$Date > prev[i] & d$Date <= bd[i]], na.rm = TRUE))
+  sapply(seq_along(bd), function(i) sum(d$vol[d$Date >= prev[i] & d$Date < bd[i]], na.rm = TRUE))
 }
 
 # ── Helpers for the identity regressions ─────────────────────────────────────

@@ -1,0 +1,17 @@
+lag,universe,token,SR_base,dSR,p_LW
+0,commodity,POWR,1.054,-0.067,0.336
+0,commodity,EWT,1.054,-0.123,0.112
+0,commodity,SNC,1.054,-0.044,0.626
+0,commodity,WOZX,1.054,-0.089,0.046
+0,multi-asset,POWR,0.12,0,1
+0,multi-asset,EWT,0.12,-0.023,0.192
+0,multi-asset,SNC,0.12,0.017,0.275
+0,multi-asset,WOZX,0.12,-0.071,0.042
+1,commodity,POWR,1.045,-0.062,0.373
+1,commodity,EWT,1.045,-0.12,0.12
+1,commodity,SNC,1.045,-0.047,0.591
+1,commodity,WOZX,1.045,-0.085,0.057
+1,multi-asset,POWR,0.123,0.002,0.957
+1,multi-asset,EWT,0.123,-0.024,0.181
+1,multi-asset,SNC,0.123,0.017,0.253
+1,multi-asset,WOZX,0.123,-0.07,0.044

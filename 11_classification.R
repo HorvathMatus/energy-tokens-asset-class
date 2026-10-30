@@ -19,7 +19,8 @@ suppressMessages({
   library(igraph)
 })
 
-load("Data/returns_full30.RData")   # R30, GROUP, PAPER30, block vectors
+load("Data/returns_full30_aligned.RData")   # R30 with exchange-traded series aligned (09b), GROUP, PAPER30, blocks
+GROUP$group[GROUP$asset == "IDEX"] <- "Cryptocurrency"   # IDEX is the token of the IDEX exchange, not an index
 dir.create("Output/identity", showWarnings = FALSE, recursive = TRUE)
 fig_dir <- "Output/figures/identity"
 dir.create(fig_dir, showWarnings = FALSE, recursive = TRUE)

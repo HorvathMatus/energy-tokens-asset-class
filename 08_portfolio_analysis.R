@@ -38,6 +38,10 @@ set.seed(2026)
 
 WINDOW <- 252          # rolling estimation window (trading days)
 REBAL  <- 21           # rebalancing frequency (~1 month)
+# one-day implementation lag: weights use returns up to t0-2 and are held from t0, so the
+# first token return held (which starts at 00:00 UTC of day t0-1) begins after the last
+# exchange close in the estimation window
+IMPL_LAG <- 1
 RF     <- 0            # annualised risk-free rate (set to 0 for comparability)
 FREQ   <- 252          # annualisation factor
 NBOOT  <- 5000         # unused since the Ledoit-Wolf (2008) HAC test replaced the bootstrap
@@ -207,10 +211,10 @@ rolling_portfolio <- function(ret_df,
   port_ret <- rep(NA_real_, n_obs)
 
   # Rebalancing dates (first rebalance after a full window)
-  rebal_idx <- seq(window + 1, n_obs - 1, by = rebal)
+  rebal_idx <- seq(window + 1 + IMPL_LAG, n_obs - 1, by = rebal)
 
   for (t0 in rebal_idx) {
-    t_end  <- t0 - 1
+    t_end  <- t0 - 1 - IMPL_LAG
     t_start <- t_end - window + 1
     t_next  <- min(t0 + rebal - 1, n_obs)
 

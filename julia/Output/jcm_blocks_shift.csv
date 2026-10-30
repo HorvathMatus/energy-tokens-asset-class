@@ -1,0 +1,6 @@
+system,own,crypto,energy_futures,gold,other_metals,equity,green,electricity,crypto_per_asset,energy_futures_per_asset,electricity_per_asset,gold_per_asset
+PWR_elec_shift,20.82,45.21,5.39,1.67,1.46,14.02,5.93,5.5,6.46,1.35,1.37,1.67
+SNC_elec_shift,21.07,43.21,5.91,1.49,1.79,14.34,6.6,5.59,6.17,1.48,1.4,1.49
+EWT_elec_shift,25.08,35.99,6.32,1.7,1.97,16.64,6.1,6.2,5.14,1.58,1.55,1.7
+PAXG_shift,27.7,14.97,7.48,14.75,4.13,20.48,10.5,NaN,2.14,1.87,NaN,14.75
+XAUT_shift,27.04,13.34,7.89,16.58,4.17,20.25,10.73,NaN,1.91,1.97,NaN,16.58

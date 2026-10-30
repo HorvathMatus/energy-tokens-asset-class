@@ -21,6 +21,10 @@ suppressMessages({
 set.seed(2026)
 
 WINDOW <- 252; REBAL <- 21; FREQ <- 252; NB <- 10000; BLK <- 21
+# one-day implementation lag: weights use returns up to t0-2 and are held from t0, so the
+# first token return held (which starts at 00:00 UTC of day t0-1) begins after the last
+# exchange close in the estimation window
+IMPL_LAG <- 1
 
 CRYPTO <- c("BTC","ETH","SOL","AVAX","DPI","IDEX","SPTOP20")   # removed in #23
 
@@ -98,12 +102,12 @@ roll <- function(ret_df, token_col=NULL, include_tok=TRUE,
   R<-R_all[,keep,drop=FALSE]; n<-nrow(R); asset_names<-colnames(R)
   ti_full <- if(!is.null(token_col)) match(token_col,asset_names) else NA
   port<-rep(NA_real_,n)
-  rebal_idx<-seq(window+1,n-1,by=rebal)
+  rebal_idx<-seq(window+1+IMPL_LAG,n-1,by=rebal)
   W_tar<-matrix(0,length(rebal_idx),ncol(R)); W_dri<-matrix(0,length(rebal_idx),ncol(R))
   w_prev<-rep(0,ncol(R)); t_prev<-NA; r=1
   for(t0 in rebal_idx){
-    te<-t0-1; ts<-te-window+1; tn<-min(t0+rebal-1,n)
-    Rw<-R[ts:te,,drop=FALSE]; naf<-colMeans(is.na(Rw)); ok<-which(naf<0.10)
+    te<-t0-1; ts<-te-IMPL_LAG-window+1; tn<-min(t0+rebal-1,n)
+    Rw<-R[ts:(te-IMPL_LAG),,drop=FALSE]; naf<-colMeans(is.na(Rw)); ok<-which(naf<0.10)
     if(length(ok)<2){r<-r+1;next}; Rw<-na.omit(Rw[,ok,drop=FALSE])
     if(nrow(Rw)<50){r<-r+1;next}
     mu<-colMeans(Rw)

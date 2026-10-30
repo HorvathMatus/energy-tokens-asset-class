@@ -4,14 +4,14 @@ EWT,Energy token,3,1
 WOZX,Energy token,3,2
 SNC,Energy token,3,1
 WPR,Energy token,3,2
-SLR,Energy token,3,1
+SLR,Energy token,3,2
 BTC,Cryptocurrency,3,1
 ETH,Cryptocurrency,3,1
 SOL,Cryptocurrency,3,1
 AVAX,Cryptocurrency,3,1
-SPTOP20,Crypto index,3,3
+SPTOP20,Crypto index,3,1
 DPI,Crypto index,3,1
-IDEX,Crypto index,3,1
+IDEX,Cryptocurrency,3,1
 ESGU,ESG / green finance,3,3
 ESGD,ESG / green finance,3,3
 BGRN,ESG / green finance,3,3
@@ -34,14 +34,14 @@ EWT,Energy token,4,1
 WOZX,Energy token,4,2
 SNC,Energy token,4,1
 WPR,Energy token,4,2
-SLR,Energy token,4,1
+SLR,Energy token,4,2
 BTC,Cryptocurrency,4,1
 ETH,Cryptocurrency,4,1
 SOL,Cryptocurrency,4,1
 AVAX,Cryptocurrency,4,1
-SPTOP20,Crypto index,4,3
+SPTOP20,Crypto index,4,1
 DPI,Crypto index,4,1
-IDEX,Crypto index,4,1
+IDEX,Cryptocurrency,4,1
 ESGU,ESG / green finance,4,3
 ESGD,ESG / green finance,4,3
 BGRN,ESG / green finance,4,3
@@ -64,14 +64,14 @@ EWT,Energy token,5,1
 WOZX,Energy token,5,2
 SNC,Energy token,5,1
 WPR,Energy token,5,2
-SLR,Energy token,5,1
+SLR,Energy token,5,2
 BTC,Cryptocurrency,5,1
 ETH,Cryptocurrency,5,1
 SOL,Cryptocurrency,5,1
 AVAX,Cryptocurrency,5,1
-SPTOP20,Crypto index,5,3
+SPTOP20,Crypto index,5,1
 DPI,Crypto index,5,1
-IDEX,Crypto index,5,1
+IDEX,Cryptocurrency,5,1
 ESGU,ESG / green finance,5,3
 ESGD,ESG / green finance,5,3
 BGRN,ESG / green finance,5,3
@@ -94,28 +94,28 @@ EWT,Energy token,6,1
 WOZX,Energy token,6,2
 SNC,Energy token,6,1
 WPR,Energy token,6,2
-SLR,Energy token,6,1
+SLR,Energy token,6,3
 BTC,Cryptocurrency,6,1
 ETH,Cryptocurrency,6,1
 SOL,Cryptocurrency,6,1
 AVAX,Cryptocurrency,6,1
-SPTOP20,Crypto index,6,3
+SPTOP20,Crypto index,6,1
 DPI,Crypto index,6,1
-IDEX,Crypto index,6,1
-ESGU,ESG / green finance,6,3
-ESGD,ESG / green finance,6,3
-BGRN,ESG / green finance,6,3
-B,Commodity,6,4
-EUA,Commodity,6,5
-CL,Commodity,6,4
+IDEX,Cryptocurrency,6,1
+ESGU,ESG / green finance,6,4
+ESGD,ESG / green finance,6,4
+BGRN,ESG / green finance,6,4
+B,Commodity,6,5
+EUA,Commodity,6,3
+CL,Commodity,6,5
 GC,Commodity,6,6
 HG,Commodity,6,6
 HH,Commodity,6,2
-LIT,Commodity,6,3
-QCLN,Energy equity,6,3
-PBW,Energy equity,6,3
-PBD,Energy equity,6,3
-ENPH,Energy equity,6,3
-NEE,Energy equity,6,3
-ICLN,Energy equity,6,3
-FENY,Energy equity,6,4
+LIT,Commodity,6,4
+QCLN,Energy equity,6,4
+PBW,Energy equity,6,4
+PBD,Energy equity,6,4
+ENPH,Energy equity,6,4
+NEE,Energy equity,6,4
+ICLN,Energy equity,6,4
+FENY,Energy equity,6,5

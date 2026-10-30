@@ -23,6 +23,10 @@ rm(list = ls())
 suppressMessages({ library(tidyverse); library(quadprog) })
 
 WINDOW <- 252; REBAL <- 21; FREQ <- 252
+# one-day implementation lag: weights use returns up to t0-2 and are held from t0, so the
+# first token return held (which starts at 00:00 UTC of day t0-1) begins after the last
+# exchange close in the estimation window
+IMPL_LAG <- 1
 C_OTHER <- 0.0010                       # one-way cost on the 24 non-token assets
 HS_TOKEN <- 0.0050                      # token half-spread in the impact model
 AUM_GRID <- c(1e6, 1e7, 1e8)
@@ -44,12 +48,12 @@ roll_gmv <- function(ret_df, token_col, include_tok) {
   R_all <- as.matrix(ret_df[, -1])
   R <- if (include_tok) R_all else R_all[, colnames(R_all) != token_col, drop = FALSE]
   n <- nrow(R); port <- rep(NA_real_, n)
-  rebal_idx <- seq(WINDOW + 1, n - 1, by = REBAL)
+  rebal_idx <- seq(WINDOW + 1 + IMPL_LAG, n - 1, by = REBAL)
   W_tar <- W_dri <- matrix(0, length(rebal_idx), ncol(R), dimnames = list(NULL, colnames(R)))
   w_prev <- rep(0, ncol(R)); t_prev <- NA
   for (r in seq_along(rebal_idx)) {
-    t0 <- rebal_idx[r]; te <- t0 - 1; ts <- te - WINDOW + 1; tn <- min(t0 + REBAL - 1, n)
-    Rw <- R[ts:te, , drop = FALSE]; ok <- which(colMeans(is.na(Rw)) < 0.10)
+    t0 <- rebal_idx[r]; te <- t0 - 1; ts <- te - IMPL_LAG - WINDOW + 1; tn <- min(t0 + REBAL - 1, n)
+    Rw <- R[ts:(te - IMPL_LAG), , drop = FALSE]; ok <- which(colMeans(is.na(Rw)) < 0.10)
     Rw <- na.omit(Rw[, ok, drop = FALSE])
     w_full <- rep(0, ncol(R)); w_full[ok] <- gmv_w(make_pd(cov(Rw)))
     w_drift <- if (sum(w_prev) > 0) {
@@ -135,7 +139,10 @@ for (tk in names(TOKENS)) {
   # (2) volume-based costs with square-root impact
   cg <- cg_inputs(tk)
   rdates <- aug$dates[aug$rebal_idx]
-  sig_i <- at_dates(cg, rdates, "sig30"); vol_i <- at_dates(cg, rdates, "vol30")
+  # the token trade happens at the 00:00 UTC snapshot that starts the first held return,
+  # which carries the date of the previous business day
+  tdates <- aug$dates[aug$rebal_idx - 1]
+  sig_i <- at_dates(cg, tdates, "sig30"); vol_i <- at_dates(cg, tdates, "vol30")
   impact_cost <- function(aum) function(i, dW) {
     c_vec <- rep(C_OTHER, length(dW))
     q <- dW[ti] * aum
